@@ -1,0 +1,10 @@
+site_name: Mecotronics
+theme:
+  name: null
+  custom_dir: 'cinder'
+nav:
+  - Home: index.md
+  - Backend: backend.md
+  - POS: pos.md
+  - Inventory: inventory.md
+  - Web App: web.md
