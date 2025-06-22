@@ -11,6 +11,7 @@ mkdocs serve
 #### To Publish To Github Pages
 
 ```
+mkdocs build
 mkdocs gh-deploy
 
 ```
