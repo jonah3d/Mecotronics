@@ -4,6 +4,7 @@ theme:
   custom_dir: 'cinder'
 nav:
   - Home: index.md
+  - Database: database.md
   - Backend: backend.md
   - POS: pos.md
   - Inventory: inventory.md

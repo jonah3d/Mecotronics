@@ -1,0 +1,175 @@
+
+module Shop {
+
+
+    
+    interface Employee : persistent {
+        attribute String<21> EmployeeNumber;
+        attribute String<50> Firstname;
+        attribute String<50> Surname;
+        attribute Date HireDate;
+        attribute Date DateOfBirth;
+        
+        attribute Double Nullable Salary;
+        attribute Double Nullable Commission;
+        attribute Image Nullable Photo;
+        
+        mt_index EmpNo_IDX unique_key TRUE criteria {
+            Employee::EmployeeNumber MT_ASCEND
+        };
+        
+        mt_index EmpName_IDX criteria
+        {Employee::Firstname MT_ASCEND},
+        {Employee::Surname MT_ASCEND};
+        
+        relationship Department MemberOf inverse Department::Members;
+        relationship Department Head [0,1] inverse Department::DepartmentHead;
+        relationship EmployeeLogin Credentials [1,1] inverse EmployeeLogin::Employee;
+        relationship Occupation Job [1,1] inverse Occupation::Employees;
+        relationship Role EmployeeRole [1,1] inverse Role::Employees;
+        relationship Address HomeAddress [0,1] inverse Address::EmployeeResidents; 
+    };
+    
+    interface EmployeeLogin : persistent {
+        attribute String<20> Username;
+        attribute String<100> Password;
+        attribute Date Nullable LastLogin;
+        
+        mt_index Username_IDX unique_key TRUE criteria {
+            EmployeeLogin::Username MT_ASCEND
+        };
+        
+        relationship Employee Employee [1,1] inverse Employee::Credentials;
+    };
+    
+    interface Department : persistent {
+        attribute String<3> DepartmentNumber;
+        attribute String<50> DepartmentName;
+        attribute String<200> Nullable Description;
+        
+        mt_index DeptNo_IDX unique_key TRUE criteria {
+            Department::DepartmentNumber MT_ASCEND
+        };
+        
+        relationship List<Employee> Members [0,-1] inverse Employee::MemberOf;
+        relationship Employee DepartmentHead [0,1] inverse Employee::Head;
+    };
+    
+    interface Occupation : persistent {
+        attribute String<50> Name;
+        attribute String<200> Nullable Description;
+        
+        relationship List<Employee> Employees [0,-1] inverse Employee::Job;
+    };
+    
+    interface Role : persistent {
+        attribute String<30> Name;
+        attribute String<200> Nullable Description;
+        attribute Integer Nullable AccessLevel;
+        
+        relationship List<Employee> Employees [0,-1] inverse Employee::EmployeeRole;
+    };
+
+ 
+    interface Client : persistent {
+        attribute String<21> ClientId;
+        attribute String<50> Firstname;
+        attribute String<50> Surname;
+        attribute String<15> Nullable Mobile;
+        attribute String<100> Nullable Email;
+        attribute Date Nullable DateOfBirth;
+        attribute Date RegistrationDate;
+        
+        mt_index ClientId_IDX unique_key TRUE criteria {
+            Client::ClientId MT_ASCEND
+        };
+        
+        mt_index ClientName_IDX criteria {
+            Client::Firstname MT_ASCEND
+        }, {Client::Surname MT_ASCEND};
+        
+        relationship ClientCard LoyaltyCard [0,1] inverse ClientCard::CardHolder;
+        relationship Address ClientAddress [0,1] inverse Address::ClientResidents;
+    };
+    
+    interface ClientCard : persistent {
+        attribute String<21> MemberNumber;
+        attribute Date RegistrationDate;
+        attribute Integer Nullable Points;
+        attribute Image Nullable CardImage;
+        attribute String<10> Nullable Status;
+        attribute Date Nullable ExpiryDate;
+        
+        mt_index MemberNo_IDX unique_key TRUE criteria {
+            ClientCard::MemberNumber MT_ASCEND
+        };
+        
+        relationship Client CardHolder [1,1] inverse Client::LoyaltyCard;
+    };
+
+
+    interface Address : persistent {
+        attribute String<100> DirecctionOne;
+        attribute String<100> DirecctionTwo;
+        attribute String<50> City;
+        attribute String<10> PostalCode;
+        attribute String<20> Nullable State;
+        attribute String<50> Country;
+        
+
+        relationship List<Employee> EmployeeResidents [0,-1] inverse Employee::HomeAddress;
+        relationship List<Client> ClientResidents [0,-1] inverse Client::ClientAddress;
+    };
+
+
+
+    interface Category : persistent {
+        attribute String<50> Name;
+        attribute String<200> Nullable Description;
+        
+        relationship List<Product> Products [0,-1] inverse Product::ProductCategory;
+    };
+    
+    interface Product : persistent {
+        attribute String<21> Reference;
+        attribute String<50> Name;
+        attribute String<20> Brand;
+        attribute String<50> Nullable Model;
+        attribute String<50> Nullable EuropeanArticleNumber;
+        attribute Date Nullable ReleaseDate;
+        attribute List<String> Colours;
+        attribute Float Nullable Weight;
+        attribute Float Nullable Height;
+        attribute Float Nullable Depth;
+        attribute String<1> Nullable EnergyEfficiency;
+        attribute Integer Nullable EnergyConsumption;
+        attribute String UTF16 Nullable Description;
+        attribute List<Byte> Nullable Images;
+
+        relationship Category ProductCategory [0,1] inverse Category::Products;
+
+        mt_index referenceNo_IDX unique_key TRUE criteria {
+            Product::Reference MT_ASCEND
+        };
+
+        mt_index ProductName_IDX criteria
+        {Product::Brand MT_ASCEND},
+        {Product::Name MT_ASCEND};
+    };
+    
+    interface Television : Product : persistent {
+        attribute Integer ScreenSize;
+        attribute String Nullable Technology;
+        attribute Integer Nullable RefreshRate;
+        attribute Boolean Hdr = FALSE;
+        attribute Boolean IntegratedSpeakers;
+        attribute Boolean HeadphoneJack;
+        attribute Boolean SmartTv;
+        attribute String OperatingSystem;
+        attribute Boolean RemoteControl;
+        attribute String Nullable Resolution;
+        attribute Integer Nullable NumberOfHdmi;
+        attribute Integer Nullable NumberOfUsb;
+        attribute String Nullable AudioTechnology;
+    };
+};
