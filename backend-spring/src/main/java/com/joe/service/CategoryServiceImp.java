@@ -30,8 +30,17 @@ public class CategoryServiceImp implements CategoryRepository {
 
     @Override
     public void addCategory(RegisterCategoryDTO registerCategoryDTO) {
-        mtDatabase.startTransaction();
+
+
         try {
+
+            if(!mtDatabase.isTransactionInProgress()){
+                mtDatabase.startTransaction();
+            }else {
+                throw new Exception("Another transaction is already in progress");
+            }
+
+
             if (registerCategoryDTO == null) {
                 throw new IllegalArgumentException("Category DTO cannot be null");
             }

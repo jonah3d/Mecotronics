@@ -5,36 +5,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RegisterCategoryDTO {
+public class RegisterOccupationDTO {
 
     @NotBlank(message = "Name cannot be blank")
     @JsonProperty("name")
-    private String Name;
+    private String name;
 
     @JsonProperty("description")
-    private String Description;
-    public RegisterCategoryDTO(String name, String description) {
-        this.Name = name;
-        this.Description = description;
+    private String description;
+
+    public RegisterOccupationDTO(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    public RegisterCategoryDTO() {
+    public RegisterOccupationDTO() {
 
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        this.Description = description;
+        this.description = description;
     }
 }
