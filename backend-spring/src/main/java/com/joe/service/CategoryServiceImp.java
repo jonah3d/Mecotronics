@@ -27,26 +27,27 @@ public class CategoryServiceImp implements CategoryRepository {
         this.mtDatabase = mtDatabase;
         this.modelMapper = modelMapper;
     }
-
     @Override
     public void addCategory(RegisterCategoryDTO registerCategoryDTO) {
-
-
         try {
-
             if(!mtDatabase.isTransactionInProgress()){
                 mtDatabase.startTransaction();
-            }else {
-                throw new Exception("Another transaction is already in progress");
+            } else {
+                // If a transaction is already in progress, handle it based on your application's
+                // transaction management strategy. For now, we'll keep the exception.
+                throw new Exception("Another transaction is already in progress.");
             }
-
 
             if (registerCategoryDTO == null) {
                 throw new IllegalArgumentException("Category DTO cannot be null");
             }
 
             Category category = new Category(mtDatabase);
-            modelMapper.map(registerCategoryDTO, category);
+            // *** CRITICAL CHANGE: Manually map properties due to final setters ***
+            // Even though it might have "worked" before, this is the robust way
+            // to handle Matisse entities with final setters.
+            category.setName(registerCategoryDTO.getName());
+            category.setDescription(registerCategoryDTO.getDescription());
 
             mtDatabase.commit();
         } catch (Exception e) {

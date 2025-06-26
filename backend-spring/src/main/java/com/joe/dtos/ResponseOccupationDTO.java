@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class RegisterRoleDTO {
+import java.util.ArrayList;
+import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ResponseOccupationDTO {
 
     @NotBlank(message = "Name cannot be blank")
     @JsonProperty("name")
@@ -15,18 +17,17 @@ public class RegisterRoleDTO {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("access_level")
-    private int accessLevel;
+    @JsonProperty("employees")
+    private List<ResponseEmployeeDTO> employees = new ArrayList<>();
 
-
-    public RegisterRoleDTO(String name, String description, int accessLevel) {
+    public ResponseOccupationDTO(String name, String description, List<ResponseEmployeeDTO> employees) {
         this.name = name;
         this.description = description;
-        this.accessLevel = accessLevel;
+        this.employees = employees;
     }
 
-    public RegisterRoleDTO() {
-
+    public ResponseOccupationDTO() {
+        // Default constructor
     }
 
     public String getName() {
@@ -45,11 +46,11 @@ public class RegisterRoleDTO {
         this.description = description;
     }
 
-    public int getAccessLevel() {
-        return accessLevel;
+    public List<ResponseEmployeeDTO> getEmployees() {
+        return employees;
     }
 
-    public void setAccessLevel(int accessLevel) {
-        this.accessLevel = accessLevel;
+    public void setEmployees(List<ResponseEmployeeDTO> employees) {
+        this.employees = employees;
     }
 }

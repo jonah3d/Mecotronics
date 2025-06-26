@@ -30,18 +30,25 @@ public class RoleServiceImp implements RoleRepository {
     public void addRole(RegisterRoleDTO registerRoleDTO) {
         try {
 
-            if(!mtDatabase.isTransactionInProgress()){
+            if (!mtDatabase.isTransactionInProgress()) {
                 mtDatabase.startTransaction();
-            }else {
+            } else {
                 throw new Exception("Another transaction is already in progress");
             }
 
             Role role = new Role(mtDatabase);
-            modelMapper.map(registerRoleDTO, role);
+
+            // For some reason we cant do it like this when we mapping outside objects to matisse
+            //even if in the modelmapper config we have the mapping manually like below
+            // modelMapper.map(registerRoleDTO, role);
+
+            role.setName(registerRoleDTO.getName().toUpperCase());
+            role.setDescription(registerRoleDTO.getDescription());
+            role.setAccessLevel(registerRoleDTO.getAccessLevel());
 
             mtDatabase.commit();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error adding role: " + e.getMessage());
             try {
                 if (mtDatabase.isTransactionInProgress()) {
@@ -58,14 +65,53 @@ public class RoleServiceImp implements RoleRepository {
 
     @Override
     public ResponseRoleDTO getRoleByName(String name) {
-        return null;
+
+        if( name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Role name cannot be null or empty");
+        }
+        ResponseRoleDTO responseRoleDTO = null;
+        try{
+
+            if(!mtDatabase.isVersionAccessInProgress()){
+                mtDatabase.startVersionAccess();
+            } else {
+                throw new Exception("Another version access is already in progress");
+            }
+
+          Role role =   Role.lookupRolename_IDX(mtDatabase, name);
+            if(role == null){
+                System.out.println("Role with name " + name + " not found.");
+                return null;
+            }
+             responseRoleDTO = modelMapper.map(role, ResponseRoleDTO.class);
+            List<ResponseEmployeeDTO> employeeDTOS = new ArrayList<>();
+            Employee[] employees = role.getEmployees();
+            if (employees != null) {
+                for (Employee employee : employees) {
+                    ResponseEmployeeDTO responseEmployeeDTO = modelMapper.map(employee, ResponseEmployeeDTO.class);
+                    employeeDTOS.add(responseEmployeeDTO);
+                }
+            }
+            responseRoleDTO.setEmployees(employeeDTOS);
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                mtDatabase.endVersionAccess();
+            } catch (Exception endEx) {
+                System.err.println("Error ending version access: " + endEx.getMessage());
+            }
+        }
+        return responseRoleDTO;
     }
 
     @Override
     public List<ResponseRoleDTO> getRoles() {
         List<ResponseRoleDTO> responseRoleDTOList = new ArrayList<>();
 
-        try{
+        try {
 
             mtDatabase.startVersionAccess();
             MtObjectIterator<Role> roleIterator = Role.instanceIterator(mtDatabase);
@@ -74,13 +120,13 @@ public class RoleServiceImp implements RoleRepository {
                 return responseRoleDTOList;
             }
 
-            while(roleIterator.hasNext()) {
+            while (roleIterator.hasNext()) {
                 Role role = roleIterator.next();
 
                 ResponseRoleDTO responseRoleDTO = modelMapper.map(role, ResponseRoleDTO.class);
                 List<ResponseEmployeeDTO> employeeDTOS = new ArrayList<>();
-                Employee[] employees =  role.getEmployees();
-                if( employees != null) {
+                Employee[] employees = role.getEmployees();
+                if (employees != null) {
                     for (Employee employee : employees) {
                         ResponseEmployeeDTO responseEmployeeDTO = modelMapper.map(employee, ResponseEmployeeDTO.class);
                         employeeDTOS.add(responseEmployeeDTO);

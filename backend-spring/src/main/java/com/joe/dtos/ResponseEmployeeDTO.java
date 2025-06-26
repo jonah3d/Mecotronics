@@ -15,13 +15,13 @@ public class ResponseEmployeeDTO {
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank")
-    @JsonProperty("last_name")
-    private String lastName;
+    @JsonProperty("surname")
+    private String surname;
 
-    public ResponseEmployeeDTO(String employeeNumber, String firstName, String lastName) {
+    public ResponseEmployeeDTO(String employeeNumber, String firstName, String surname) {
         this.employeeNumber = employeeNumber;
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.surname = surname;
     }
 
     public ResponseEmployeeDTO() {
@@ -43,11 +43,11 @@ public class ResponseEmployeeDTO {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }
