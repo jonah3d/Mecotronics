@@ -46,6 +46,15 @@ public class Employee extends com.matisse.reflect.MtObject {
         return (com.matisse.reflect.MtClass)db.getCachedObject(CID);
     }
 
+    @Override
+    public void deepRemove() {
+      EmployeeLogin employeeLogin =   getCredentials();
+      if(employeeLogin != null) {
+          employeeLogin.deepRemove();
+      }
+      super.deepRemove();
+    }
+
     /**
      * Factory constructor. This constructor is called by <code>MtObjectFactory</code>.
      * It is public for technical reasons but is not intended to be called

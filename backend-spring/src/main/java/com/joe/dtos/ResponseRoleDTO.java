@@ -9,7 +9,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseRoleDTO {
-    @NotBlank(message = "Name cannot be blank")
+
     @JsonProperty("role_name")
     private String name;
 

@@ -12,17 +12,17 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegisterEmployeeDTO {
 
-    @NotBlank(message = "Employee number cannot be blank")
-    @JsonProperty("emp_num")
-    private String employeeNumber;
+//    @NotBlank(message = "Employee number cannot be blank")
+//    @JsonProperty("emp_num")
+//    private String employeeNumber;
 
     @NotBlank(message = "First name cannot be blank")
     @JsonProperty("first_name")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank")
-    @JsonProperty("last_name")
-    private String lastName;
+    @JsonProperty("surname")
+    private String surname;
 
     @NotNull(message = "Hire date cannot be blank")
     @JsonProperty("hire_date")
@@ -51,9 +51,9 @@ public class RegisterEmployeeDTO {
     @JsonProperty("employee_role")
     private String employeeRole;
 
-    @NotBlank(message = "Occupation cannot be blank")
-    @JsonProperty("occupation")
-    private String occupation;
+    @NotBlank(message = "Job cannot be blank")
+    @JsonProperty("job")
+    private String job;
 
     @NotBlank(message = "Department cannot be blank")
     @JsonProperty("department_number")
@@ -64,16 +64,16 @@ public class RegisterEmployeeDTO {
     @JsonProperty("credentials")
     private RegisterEmployeeLoginDTO credentials;
 
-    public String getEmployeeNumber() {
-        return employeeNumber;
-    }
+//    public String getEmployeeNumber() {
+//        return employeeNumber;
+//    }
 
     public RegisterEmployeeDTO() {
     }
 
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
-    }
+//    public void setEmployeeNumber(String employeeNumber) {
+//        this.employeeNumber = employeeNumber;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -83,12 +83,12 @@ public class RegisterEmployeeDTO {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public Date getHireDate() {
@@ -147,12 +147,12 @@ public class RegisterEmployeeDTO {
         this.employeeRole = employeeRole;
     }
 
-    public String getOccupation() {
-        return occupation;
+    public String getJob() {
+        return job;
     }
 
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public String getDepartmentNumber() {
@@ -171,10 +171,10 @@ public class RegisterEmployeeDTO {
         this.credentials = credentials;
     }
 
-    public RegisterEmployeeDTO(String employeeNumber, String firstName, String lastName, Date hireDate, Date dateOfBirth, double salary, double commission, byte[] image, RegisterHomeAddressDTO homeAddress, String employeeRole, String occupation, String departmentNumber, RegisterEmployeeLoginDTO credentials) {
-        this.employeeNumber = employeeNumber;
+    public RegisterEmployeeDTO( String firstName, String surname, Date hireDate, Date dateOfBirth, double salary, double commission, byte[] image, RegisterHomeAddressDTO homeAddress, String employeeRole, String job, String departmentNumber, RegisterEmployeeLoginDTO credentials) {
+       // this.employeeNumber = employeeNumber;
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.surname = surname;
         this.hireDate = hireDate;
         this.dateOfBirth = dateOfBirth;
         this.salary = salary;
@@ -182,7 +182,7 @@ public class RegisterEmployeeDTO {
         this.image = image;
         this.homeAddress = homeAddress;
         this.employeeRole = employeeRole;
-        this.occupation = occupation;
+        this.job = job;
         this.departmentNumber = departmentNumber;
         this.credentials = credentials;
     }

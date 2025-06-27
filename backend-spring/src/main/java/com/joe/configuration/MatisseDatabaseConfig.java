@@ -23,9 +23,11 @@ public class MatisseDatabaseConfig {
     @Value("${matisse.namespace}") // Optional, with a default value
     private String matissenamespace;
 
+
+
     @Bean
     @Primary
-    // @Lazy(false) is not needed here as Spring will manage the lifecycle
+
     public MtDatabase mtDatabase() {
         if (host == null || databaseName == null || javaPackage == null) {
             throw new IllegalArgumentException("Matisse configuration properties are not set");
