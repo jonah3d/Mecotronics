@@ -1,4 +1,4 @@
-package com.joe.configuration;
+package com.joe.constants;
 
 public class AuthConstants {
     public static final String ROLE_ADMIN = "ADMIN";

@@ -11,9 +11,9 @@ Naturally, a project based on pure objects fits this interest of mine best. Ther
 By the end of this project, I aim to present the following applications:
 
 * Backend (Spring Boot)
-* Point-of-Sale Application (WinUI)
-* Inventory Management (Swing)
-* Web UI (React)
+* Point-of-Sale Application (WPF)
+* Inventory Management (WPF)
+* Web UI (Spring MVC)
 
 These correspond to the different application projects that will be developed:
 

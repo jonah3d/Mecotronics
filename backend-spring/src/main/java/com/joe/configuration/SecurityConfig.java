@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(authorize -> authorize
                         // Allow public access to employee addition and read endpoints
+                        .requestMatchers("/api/shop/auth/login").permitAll()
                         .requestMatchers("/api/shop/employees/add").permitAll() // Employee registration
                         .requestMatchers("/api/shop/employees/get/{emp_num}").permitAll() // Get specific employee
                         .requestMatchers("/api/shop/employees").permitAll() // Get all employees
@@ -51,18 +52,16 @@ public class SecurityConfig {
                         .requestMatchers("/api/shop/**").authenticated() // All other /api/shop/ paths need auth
 
 
-                        .requestMatchers("/api/auth/login").permitAll()
+
 
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
-                        // Keep session stateless for API best practice
+
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .httpBasic(org.springframework.security.config.Customizer.withDefaults()); // Enable HTTP Basic Authentication
 
-        // Remove the JWT filter if it was there
-        // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

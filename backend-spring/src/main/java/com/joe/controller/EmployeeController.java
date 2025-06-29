@@ -38,7 +38,7 @@ public class EmployeeController {
             return ResponseEntity.ok("Employee has been successfully added");
 
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Adding Employee");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Adding Employee" + e.getMessage());
         }
 
     }

@@ -315,4 +315,39 @@ public class EmployeeServiceImp implements EmployeeRepository {
             throw new RuntimeException("Error adding employee", e);
         }
     }
+
+    public void updateEmployeeLastLogin(String username) {
+        try {
+
+            if (!mtDatabase.isTransactionInProgress()) {
+                mtDatabase.startTransaction();
+            } else {
+                throw new IllegalStateException("Another Matisse transaction is already in progress.");
+            }
+
+
+            EmployeeLogin employeeLogin = EmployeeLogin.lookupUsername_IDX(mtDatabase, username);
+
+            if (employeeLogin != null) {
+
+                employeeLogin.setLastLogin(new GregorianCalendar());
+            } else {
+                System.err.println("Warning: EmployeeLogin not found for username " + username + " when trying to update last login.");
+            }
+
+            mtDatabase.commit();
+        } catch (Exception e) {
+            System.err.println("Error updating last login for user " + username + ": " + e.getMessage());
+            e.printStackTrace();
+            try {
+                if (mtDatabase.isTransactionInProgress()) {
+                    mtDatabase.rollback();
+                }
+            } catch (Exception rollbackEx) {
+                System.err.println("Error during rollback for update last login: " + rollbackEx.getMessage());
+            }
+            throw new RuntimeException("Failed to update last login for user " + username, e);
+        }
+    }
+
 }

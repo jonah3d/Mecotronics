@@ -1,5 +1,6 @@
 package com.joe.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +13,7 @@ public class ResponseEmployeeLoginDTO {
     private String username;
 
     @JsonProperty("last_login")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastLogin;
 
     public ResponseEmployeeLoginDTO() {
@@ -39,4 +41,6 @@ public class ResponseEmployeeLoginDTO {
             this.lastLogin = lastLogin.getTime();
         }
     }
+
+
 }
