@@ -132,12 +132,181 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#database-design">Database Design</a></li>
+        <li class="first-level active"><a href="#database">Database</a></li>
+            <li class="second-level"><a href="#why-matisse">Why Matisse?</a></li>
+                
+                <li class="third-level"><a href="#key-strengths">Key Strengths:</a></li>
+        <li class="first-level "><a href="#database-schema">Database Schema</a></li>
+            <li class="second-level"><a href="#employees-departments">Employees &amp; Departments</a></li>
+                
+                <li class="third-level"><a href="#employee">Employee</a></li>
+                <li class="third-level"><a href="#department">Department</a></li>
+            <li class="second-level"><a href="#authentication-access-control">Authentication &amp; Access Control</a></li>
+                
+                <li class="third-level"><a href="#employeelogin">EmployeeLogin</a></li>
+                <li class="third-level"><a href="#role">Role</a></li>
+            <li class="second-level"><a href="#jobs-and-occupations">Jobs and Occupations</a></li>
+                
+                <li class="third-level"><a href="#occupation">Occupation</a></li>
+            <li class="second-level"><a href="#clients-addresses">Clients &amp; Addresses</a></li>
+                
+                <li class="third-level"><a href="#client">Client</a></li>
+                <li class="third-level"><a href="#address">Address</a></li>
+            <li class="second-level"><a href="#loyalty-cards">Loyalty Cards</a></li>
+                
+                <li class="third-level"><a href="#clientcard">ClientCard</a></li>
+            <li class="second-level"><a href="#products-and-categories">Products and Categories</a></li>
+                
+                <li class="third-level"><a href="#category">Category</a></li>
+                <li class="third-level"><a href="#product">Product</a></li>
+            <li class="second-level"><a href="#specialized-product-television">Specialized Product: Television</a></li>
+                
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="database-design">Database Design</h1></div>
+<h1 id="database">Database</h1>
+<p>Diving into this project felt like having enthusiasm of a hundred neophytes. I was eager to apply the powerful database concepts I had only recently learned in class and Matisse, the post-relational SQL database, seemed like the perfect tool to do just that.</p>
+<h2 id="why-matisse">Why Matisse?</h2>
+<p><strong>Matisse</strong>, <em>the post relational sql database</em>. Isn't particually a new kid on the block but rather unfortunately its been discontinued due to lack of mass adoption of Object Oriented Database Management Systems.
+Which is unfortunate because matisse isn't  a pure <strong>OODBMS</strong>. 
+According to them:</p>
+<blockquote>
+<p>Designed to benefit both object developers and database administrators, Matisse combines native support for Object, XML and SQL within a single database.  </p>
+</blockquote>
+<p>Unlike traditional relational databases or even pure object-oriented database management systems (OODBMS), Matisse provides native support for:</p>
+<ul>
+<li>
+<p>Objects: Directly storing and retrieving instances of classes from C#, Java, or Python.</p>
+</li>
+<li>
+<p>SQL: Running familiar relational queries.</p>
+</li>
+<li>
+<p>XML: Integrating hierarchical and semi-structured data when needed.</p>
+</li>
+</ul>
+<h3 id="key-strengths">Key Strengths:</h3>
+<ul>
+<li>
+<p>Eliminates the need for ORMs: Your application’s classes can be directly mapped to the database schema.</p>
+</li>
+<li>
+<p>Strong type safety: Object relationships and constraints are embedded in the schema, promoting a clean domain model.</p>
+</li>
+<li>
+<p>Powerful indexing: Native indexing options on almost every entity make for efficient querying.</p>
+</li>
+</ul>
+<p>These are but a few of the main reasons I decided to use matisse for this project, it allows me to draw up one database schema that in itself maps to application models without having to write boilerplate code two times.</p>
+<h1 id="database-schema">Database Schema</h1>
+<h2 id="employees-departments">Employees &amp; Departments</h2>
+<h3 id="employee"><code>Employee</code></h3>
+<p>The central model representing workers in the organization.</p>
+<ul>
+<li><strong>Attributes</strong>: Basic identification, contact, and employment details (e.g. <code>HireDate</code>, <code>Salary</code>, <code>Commission</code>, <code>Photo</code>).</li>
+<li>
+<p><strong>Relationships</strong>:</p>
+</li>
+<li>
+<p><code>MemberOf</code>: Links an employee to their department.</p>
+</li>
+<li><code>Head</code>: One employee may head a department.</li>
+<li><code>Job</code>: Each employee is assigned an <code>Occupation</code>.</li>
+<li><code>EmployeeRole</code>: Permissions or access level abstraction.</li>
+<li><code>Credentials</code>: One-to-one mapping to <code>EmployeeLogin</code>.</li>
+<li><code>HomeAddress</code>: Optional residential link.</li>
+</ul>
+<p><strong>Indexes</strong> on <code>EmployeeNumber</code>, <code>Firstname</code>, and <code>Surname</code> help fast retrieval by key identity or name.</p>
+<h3 id="department"><code>Department</code></h3>
+<p>Organizational unit with:</p>
+<ul>
+<li>A list of <code>Members</code> (employees).</li>
+<li>An optional <code>DepartmentHead</code> (employee).</li>
+<li>Indexed by a unique <code>DepartmentNumber</code>.</li>
+</ul>
+<h2 id="authentication-access-control">Authentication &amp; Access Control</h2>
+<h3 id="employeelogin"><code>EmployeeLogin</code></h3>
+<p>Credentials stored separately with:</p>
+<ul>
+<li><code>Username</code> (unique), <code>Password</code>, and <code>LastLogin</code>.</li>
+<li>Inverse relationship to a single <code>Employee</code>.</li>
+</ul>
+<h3 id="role"><code>Role</code></h3>
+<p>Represents the <strong>permission level</strong> or functional group in the system.</p>
+<ul>
+<li>Roles have names, optional descriptions, and <code>AccessLevel</code>.</li>
+<li>Connected to many employees.</li>
+</ul>
+<h2 id="jobs-and-occupations">Jobs and Occupations</h2>
+<h3 id="occupation"><code>Occupation</code></h3>
+<p>Job titles or duties — e.g., "Technician", "Salesperson".</p>
+<ul>
+<li>Related to multiple employees.</li>
+<li>Indexed by <code>Name</code> for fast role-based lookups.</li>
+</ul>
+<h2 id="clients-addresses">Clients &amp; Addresses</h2>
+<h3 id="client"><code>Client</code></h3>
+<p>Represents a customer:</p>
+<ul>
+<li>Contact info (<code>Email</code>, <code>Mobile</code>) and metadata (<code>RegistrationDate</code>, <code>DateOfBirth</code>).</li>
+<li>
+<p>Linked to:</p>
+</li>
+<li>
+<p><code>ClientCard</code>: optional loyalty card.</p>
+</li>
+<li><code>ClientAddress</code>: optional home address.</li>
+<li>Indexed on <code>ClientId</code> and full name.</li>
+</ul>
+<h3 id="address"><code>Address</code></h3>
+<p>Shared address entity used by both clients and employees:</p>
+<ul>
+<li>Standard address fields with optional <code>State</code>.</li>
+<li>
+<p>Two relationships:</p>
+</li>
+<li>
+<p><code>EmployeeResidents</code></p>
+</li>
+<li><code>ClientResidents</code></li>
+</ul>
+<h2 id="loyalty-cards">Loyalty Cards</h2>
+<h3 id="clientcard"><code>ClientCard</code></h3>
+<p>Optional card associated with a client:</p>
+<ul>
+<li>Attributes like <code>Points</code>, <code>Status</code>, <code>ExpiryDate</code>, and <code>CardImage</code>.</li>
+<li>Linked to exactly one <code>CardHolder</code> (<code>Client</code>).</li>
+</ul>
+<h2 id="products-and-categories">Products and Categories</h2>
+<h3 id="category"><code>Category</code></h3>
+<p>Used to classify <code>Products</code>. Each has:</p>
+<ul>
+<li>A <code>Name</code> and <code>Description</code>.</li>
+<li>Linked to multiple products.</li>
+<li>Indexed by <code>Name</code>.</li>
+</ul>
+<h3 id="product"><code>Product</code></h3>
+<p>Represents a purchasable item in the system:</p>
+<ul>
+<li>Attributes for physical characteristics (<code>Weight</code>, <code>Dimensions</code>, <code>EnergyConsumption</code>, etc.).</li>
+<li>Metadata (<code>Colours</code>, <code>Description</code>, <code>ReleaseDate</code>, <code>Images</code>).</li>
+<li>Belongs to a <code>Category</code>.</li>
+</ul>
+<p>Indexed on:</p>
+<ul>
+<li><code>Reference</code> (primary key)</li>
+<li>Combination of <code>Brand</code> and <code>Name</code>.</li>
+</ul>
+<h2 id="specialized-product-television">Specialized Product: <code>Television</code></h2>
+<p>Inherits from <code>Product</code>, and adds:</p>
+<ul>
+<li><code>ScreenSize</code>, <code>Technology</code>, <code>RefreshRate</code></li>
+<li>Smart features: <code>SmartTv</code>, <code>OperatingSystem</code>, <code>RemoteControl</code></li>
+<li>Inputs: <code>NumberOfHdmi</code>, <code>NumberOfUsb</code>, <code>HeadphoneJack</code></li>
+<li>Audio/video capabilities like <code>Hdr</code>, <code>AudioTechnology</code></li>
+</ul>
+<p>This inheritance allows reusing common product properties while enriching them with television-specific attributes.</p></div>
         
         
     </div>
